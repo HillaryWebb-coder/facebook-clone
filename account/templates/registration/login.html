@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+Log In
+{% endblock title %}
+
+{% block content %}
+<h2>Login</h2>
+{% if form.errors %}
+<p>Invalid Credentials</p>
+{% else %}
+<p> Log in with either username or email using the form below</p>
+{% endif %}
+
+<form method="POST">
+    {{ form.as_div }}
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="submit" value="Login" />
+</form>
+<p><a href="{% url 'password_reset' %}">Forgotten password?</a></p>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+Register
+{% endblock title %}
+{% block content %}
+<h2>Register</h2>
+{% if form.errors %}
+<p>Errors have occured on the form</p>
+{% else %}
+<p>Register using the form below
+{% endif %}
+<form method="post">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit" value="CREATE AN ACCOUNT">
+</form>
+{% endblock content %}
