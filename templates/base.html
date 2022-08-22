@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Clone - {% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+    <script src="{% static 'js/jquery.js' %}"></script>
+</head>
+<body>
+    <header>
+        <h1>Facebook Clone</h1>
+        {% include "navbar.html" %}
+    </header>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="{{message.tags}}">{{ message|safe }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock content %}
+    {% csrf_token %}
+    <script>
+        $("document").ready(()=>{
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+             function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            })
+            {% block jquery %}{% endblock jquery %}
+        })
+    </script>
+</body>
+</html>

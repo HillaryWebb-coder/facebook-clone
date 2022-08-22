@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}
+Images post list
+{% endblock title %}
+{% block content %}
+<h2>List of all posts</h2>
+{% for image in images %}
+<div>
+    <p>{{ image.author.username }}</p>
+    <h4>{{ image.title }}</h4>
+    <img src="{% thumbnail image.image 400x900 crop='smart' %}" alt="{{ image.title }}">
+    <p><button id="like-button" data-id="{{ image.id }}" data-action="{% if request.user in request.user.users_like %}dislike{% else %}like{% endif %}">{% if request.user in request.user.users_like %}Dislike{% else %}Like{% endif %}</button>{% with likes_count=image.users_like.count %}{{ likes_count }} like{{ likes_count | pluralize }} {% endwith %}</p>
+    <p>{{ image.description | linebreaks }}</p>
+</div>
+{% endfor %}
+{% endblock content %}
+{% block jquery %}
+    setInterval(())
+
+    $("#like-button").on("click", () => {
+        let image_id = $("#like-button").attr("data-id")
+        let action = $("#like-button").attr("data-action")
+        console.log(image_id, action)
+        $.post("{% url 'images:like_image' %}",{"image_id": image_id, "action": action }).done((data) => {
+            if(action === "like"){
+                $("#like-button").attr("data-action", "dislike")
+            }else{
+                $("#like-button").attr("data-action", "like")
+            }
+            console.log(data)
+        })
+})
+{% endblock jquery %}

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-e)bu70ylzgbs0vdfi9po*e8n6zjhdzvb1co&#0x(j_@%h5#529
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['socialize.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'images',
+    'social_django',
+    'django_extensions',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -121,9 +125,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
+STATICFILES_DIRS = [
+    BASE_DIR, 'static/',
+]
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'templates'
+# STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -7,25 +7,32 @@ from django.contrib import messages
 # Custom Imports
 from .forms import UserEditForm, ProfileEditForm
 from .models import Profile
-# Create your views here.
 
 
 def registerView(request):
+    """
+    Allow the users to register and create a new account
+    """
     form = UserCreationForm(request.POST or None)
     if form.is_valid():
         new_user = form.save()
-        Profile.objects.create(user=new_user)
         return redirect(reverse("login"))
     return render(request, "account/register.html", {"form": form})
 
 
 @login_required
 def dashboardView(request):
+    """
+    Display the user dashboard
+    """
     return render(request, "account/dashboard.html", {'section': 'dashboard'})
 
 
 @login_required
 def editProfileView(request):
+    """
+    Users can edit their profile from their dashboard
+    """
     user_form = UserEditForm(instance=request.user, data=request.POST or None)
     profile_form = ProfileEditForm(
         instance=request.user.profile, data=request.POST or None, files=request.FILES)
